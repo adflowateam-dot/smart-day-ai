@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@ button{cursor:pointer}
 .app{max-width:760px;margin:auto;padding:0 17px 30px}
 .topbar{height:68px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
-.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(140deg,#c6b3ff,#7763dc);display:grid;place-items:center;color:#17112e;font-size:19px;box-shadow:0 7px 22px #7864d944}
+.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(140deg,#c6b3ff,#7763dc);display:grid;place-items:center;color:#17112e;font-size:19px;box-shadow:0 7px 22px #7864dc44}
 .brand small{display:block;color:var(--muted);font-size:10px;font-weight:600;letter-spacing:1.5px;margin-top:2px}
 .icon-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text);font-size:18px}
 .page{display:none;animation:appear .22s ease}.page.active{display:block}
@@ -239,34 +240,44 @@ const dateObj = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y
 const addDays = (s,n) => { const d=dateObj(s); d.setDate(d.getDate()+n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
 const keyFor = date => DAY_PREFIX+date;
 let selectedDate=todayISO(), calendarMode="month", taskFilter="all", settings={theme:"dark",language:"en"};
-let recognition=null, toastTimer=null;
+let toastTimer=null;
+
 const translations={
  en:{goodday:"YOUR DAY, YOUR WAY",dailyprogress:"DAILY PROGRESS",tasks:"Tasks",completed:"Completed",remaining:"Remaining",todayplan:"Today's plan",viewall:"VIEW ALL",upcoming:"Coming up",addtask:"Add a task",organize:"ORGANIZE YOUR TIME",calendar:"Calendar",calendarSub:"See your plans by month, week or day.",today:"Today",stayfocused:"STAY FOCUSED",mytasks:"My tasks",tasksSub:"Your plans, one clear step at a time.",nevermiss:"NEVER MISS A MOMENT",alarms:"Alarms",alarmsSub:"Timed tasks can ring even when the app is closed, when Android alarm permission is available.",devicealarms:"Device alarms",scheduled:"Scheduled reminders",alarmNote:"On Android, Smart Day AI sends your complete active alarm list to the device scheduler. Keep notifications and Alarms & reminders permission enabled.",home:"Home",voice:"Voice",taskname:"TASK NAME",date:"DATE",time:"TIME",duration:"DURATION (MIN)",category:"CATEGORY",setalarm:"Set device alarm for this task",repeat:"Repeat daily",cancel:"Cancel",saveTask:"Save task",deleteTask:"Delete task",voiceAssistant:"Voice assistant",voiceHint:"Try: “Call Ahmed at 5 PM” or type a task below.",sayTask:"SAY OR TYPE YOUR TASK",close:"Close",createTask:"Create task",settings:"Settings",appearance:"Appearance",language:"Language",notifications:"Notifications",data:"Your data",all:"All",active:"Active",done:"Done",empty:"Nothing planned here yet.",addFirst:"Add your first task and make today count.",noUpcoming:"No upcoming tasks.",selected:"Selected day",todayProgress:"You're making progress!",fresh:"A fresh start awaits.",steps:"Every small step counts.",ready:"READY",deviceReady:"Android alarm scheduler connected.",browserOnly:"Browser mode: reminders work only while this page stays open.",noSpeech:"Speech recognition is not supported here. You can type your task instead.",listening:"Listening… speak now",tapSpeak:"Tap the microphone and speak",saved:"Task saved",deleted:"Task deleted",completedToast:"Task completed",alarmSynced:"Device alarms updated",permission:"If Android asks, allow Alarms & reminders.",noTime:"No time set",tomorrow:"Tomorrow",todayWord:"Today",allDay:"All day",exported:"Backup prepared"}
  ,ur:{goodday:"آپ کا دن، آپ کے انداز میں",dailyprogress:"آج کی پیش رفت",tasks:"کام",completed:"مکمل",remaining:"باقی",todayplan:"آج کا پلان",viewall:"سب دیکھیں",upcoming:"اگلے کام",addtask:"نیا کام شامل کریں",organize:"اپنے وقت کو ترتیب دیں",calendar:"کیلنڈر",calendarSub:"ماہ، ہفتہ یا دن کے حساب سے پلان دیکھیں۔",today:"آج",stayfocused:"توجہ برقرار رکھیں",mytasks:"میرے کام",tasksSub:"ہر کام ایک قدم کے ساتھ۔",nevermiss:"کوئی وقت نہ چھوٹے",alarms:"الارم",alarmsSub:"Android کی اجازت کے ساتھ ایپ بند ہونے پر بھی الارم بج سکتا ہے۔",devicealarms:"فون کے الارم",scheduled:"شیڈول ریمائنڈرز",alarmNote:"Android پر ایپ تمام فعال الارمز فون کے شیڈولر کو بھیجتی ہے۔ نوٹیفکیشن اور Alarms & reminders کی اجازت آن رکھیں۔",home:"ہوم",voice:"آواز",taskname:"کام کا نام",date:"تاریخ",time:"وقت",duration:"دورانیہ (منٹ)",category:"قسم",setalarm:"اس کام کا فون الارم لگائیں",repeat:"روزانہ دہرائیں",cancel:"منسوخ",saveTask:"محفوظ کریں",deleteTask:"کام حذف کریں",voiceAssistant:"وائس اسسٹنٹ",voiceHint:"مثلاً: شام 5 بجے احمد کو کال کریں، یا نیچے لکھیں۔",sayTask:"بولیں یا کام لکھیں",close:"بند کریں",createTask:"کام بنائیں",settings:"ترتیبات",appearance:"تھیم",language:"زبان",notifications:"نوٹیفکیشن",data:"آپ کا ڈیٹا",all:"تمام",active:"باقی",done:"مکمل",empty:"ابھی یہاں کوئی کام نہیں۔",addFirst:"اپنا پہلا کام شامل کریں۔",noUpcoming:"فی الحال کوئی اگلا کام نہیں۔",selected:"منتخب دن",todayProgress:"آپ اچھی پیش رفت کر رہے ہیں!",fresh:"آج ایک نئی شروعات ہے۔",steps:"ہر چھوٹا قدم اہم ہے۔",ready:"تیار",deviceReady:"Android الارم سسٹم منسلک ہے۔",browserOnly:"براؤزر موڈ: یاددہانی صرف صفحہ کھلا رہنے تک کام کرے گی۔",noSpeech:"یہاں آواز کی سہولت دستیاب نہیں۔ آپ کام لکھ سکتے ہیں۔",listening:"سن رہا ہوں… بولیں",tapSpeak:"مائیک دبائیں اور بولیں",saved:"کام محفوظ ہوگیا",deleted:"کام حذف ہوگیا",completedToast:"کام مکمل ہوگیا",alarmSynced:"فون کے الارم اپ ڈیٹ ہوگئے",permission:"اگر Android اجازت مانگے تو Alarms & reminders کی اجازت دیں۔",noTime:"وقت مقرر نہیں",tomorrow:"کل",todayWord:"آج",allDay:"پورا دن",exported:"بیک اپ تیار ہے"}
  ,ar:{goodday:"يومك، بطريقتك",dailyprogress:"تقدم اليوم",tasks:"المهام",completed:"مكتمل",remaining:"متبقي",todayplan:"خطة اليوم",viewall:"عرض الكل",upcoming:"التالي",addtask:"إضافة مهمة",organize:"نظّم وقتك",calendar:"التقويم",calendarSub:"شاهد خططك بالشهر أو الأسبوع أو اليوم.",today:"اليوم",stayfocused:"حافظ على تركيزك",mytasks:"مهامي",tasksSub:"خطوة واضحة في كل مرة.",nevermiss:"لا تفوّت أي موعد",alarms:"التنبيهات",alarmsSub:"يمكن للتنبيهات أن تعمل عند إغلاق التطبيق إذا كانت أذونات Android متاحة.",devicealarms:"تنبيهات الجهاز",scheduled:"التذكيرات المجدولة",alarmNote:"يرسل التطبيق قائمة التنبيهات النشطة كاملة إلى Android. فعّل الإشعارات وإذن المنبهات.",home:"الرئيسية",voice:"صوت",taskname:"اسم المهمة",date:"التاريخ",time:"الوقت",duration:"المدة (دقيقة)",category:"الفئة",setalarm:"ضبط تنبيه لهذه المهمة",repeat:"تكرار يومي",cancel:"إلغاء",saveTask:"حفظ المهمة",deleteTask:"حذف المهمة",voiceAssistant:"المساعد الصوتي",voiceHint:"مثال: اتصل بأحمد الساعة 5 مساءً، أو اكتب المهمة.",sayTask:"قل أو اكتب مهمتك",close:"إغلاق",createTask:"إنشاء مهمة",settings:"الإعدادات",appearance:"المظهر",language:"اللغة",notifications:"الإشعارات",data:"بياناتك",all:"الكل",active:"نشطة",done:"مكتملة",empty:"لا توجد مهام هنا بعد.",addFirst:"أضف مهمتك الأولى.",noUpcoming:"لا توجد مهام قادمة.",selected:"اليوم المحدد",todayProgress:"أنت تحرز تقدماً!",fresh:"بداية جديدة تنتظرك.",steps:"كل خطوة صغيرة مهمة.",ready:"جاهز",deviceReady:"تم الاتصال بجدولة تنبيهات Android.",browserOnly:"وضع المتصفح: تعمل التذكيرات فقط أثناء بقاء الصفحة مفتوحة.",noSpeech:"التعرف على الصوت غير مدعوم هنا. يمكنك كتابة المهمة.",listening:"أستمع إليك… تفضل",tapSpeak:"اضغط على الميكروفون وتحدث",saved:"تم حفظ المهمة",deleted:"تم حذف المهمة",completedToast:"تم إكمال المهمة",alarmSynced:"تم تحديث تنبيهات الجهاز",permission:"إذا طلب Android إذناً، اسمح بالتنبيهات.",noTime:"لم يتم تحديد وقت",tomorrow:"غداً",todayWord:"اليوم",allDay:"طوال اليوم",exported:"تم تجهيز النسخة الاحتياطية"}
 };
+
 const t=k=>(translations[settings.language]||translations.en)[k]||translations.en[k]||k;
+
 function loadSettings(){try{settings={...settings,...JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}")}}catch(e){}}
 function saveSettings(){localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}
 function loadDay(date){try{const a=JSON.parse(localStorage.getItem(keyFor(date))||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveDay(date,items){localStorage.setItem(keyFor(date),JSON.stringify(items));syncAndroidAlarms();renderAll();}
 function getAllDates(){const dates=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&/^dv_day_\d{4}-\d{2}-\d{2}$/.test(k))dates.push(k.slice(DAY_PREFIX.length));}return dates.sort();}
 function getAllTasks(){return getAllDates().flatMap(date=>loadDay(date).map(task=>({...task,date})));}
+
 function syncAndroidAlarms(){
  try{
-  if(!window.AndroidAlarms||typeof AndroidAlarms.scheduleTasks!=="function")return;
+  if(!window.AndroidAlarms||typeof window.AndroidAlarms.scheduleTasks!=="function")return;
   const all=getAllTasks().filter(x=>!x.done&&!x.suggested&&!x.isBreak&&x.alarmEnabled!==false&&Number.isInteger(+x.hour)&&Number.isInteger(+x.minute));
   const payload=all.map(x=>({id:String(x.id),title:String(x.title||"Reminder"),date:x.date,hour:+x.hour,minute:+x.minute}));
-  AndroidAlarms.scheduleTasks(JSON.stringify(payload));
+  window.AndroidAlarms.scheduleTasks(JSON.stringify(payload));
  }catch(e){console.warn("Alarm sync failed",e)}
 }
-function showToast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2400)}
-function fmtDate(date,opts={weekday:"long",month:"long",day:"numeric"}){return dateObj(date).toLocaleDateString(settings.language==="ur"?"ur-PK":settings.language==="ar"?"ar-SA":"en-US",opts)}
-function fmtTime(task){if(task.hour===undefined||task.minute===undefined)return t("noTime");const d=new Date();d.setHours(+task.hour,+task.minute,0,0);return d.toLocaleTimeString(settings.language==="ur"?"ur-PK":settings.language==="ar"?"ar-SA":"en-US",{hour:"numeric",minute:"2-digit"})}
-function sorted(items){return [...items].sort((a,b)=>(a.hour??99)*60+(a.minute??0)-(b.hour??99)*60-(b.minute??0))}
-function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function taskHTML(task,date){const time=task.hour===undefined?t("noTime"):fmtTime(task);return `<article class="task ${task.done?"done":""}"><button class="check ${task.done?"done":""}" data-action="toggle" data-id="${escapeHTML(task.id)}" data-date="${date}" aria-label="Complete">${task.done?"✓":""}</button><div class="task-main"><div class="task-title">${escapeHTML(task.title)}</div><div class="task-meta">${escapeHTML(task.category||"Personal")} · ${task.duration||30} min ${task.alarmEnabled===false?"":"· ⏰"}</div></div><div class="task-time">${escapeHTML(time)}</div><button class="more-btn" data-action="edit" data-id="${escapeHTML(task.id)}" data-date="${date}" aria-label="Edit">⋯</button></article>`}
-function emptyHTML(msg=t("empty")){return `<div class="empty"><div class="emoji">✦</div>${escapeHTML(msg)}</div>`}
+
+function showToast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2400);}
+function fmtDate(date,opts={weekday:"long",month:"long",day:"numeric"}){return dateObj(date).toLocaleDateString(settings.language==="ur"?"ur-PK":settings.language==="ar"?"ar-SA":"en-US",opts);}
+function fmtTime(task){if(task.hour===undefined||task.minute===undefined)return t("noTime");const d=new Date();d.setHours(+task.hour,+task.minute,0,0);return d.toLocaleTimeString(settings.language==="ur"?"ur-PK":settings.language==="ar"?"ar-SA":"en-US",{hour:"numeric",minute:"2-digit"});}
+function sorted(items){return [...items].sort((a,b)=>(a.hour??99)*60+(a.minute??0)-(b.hour??99)*60-(b.minute??0));}
+function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+
+function taskHTML(task,date){
+ const time=task.hour===undefined?t("noTime"):fmtTime(task);
+ return `<article class="task ${task.done?"done":""}"><button class="check ${task.done?"done":""}" data-action="toggle" data-id="${escapeHTML(task.id)}" data-date="${date}" aria-label="Complete">${task.done?"✓":""}</button><div class="task-main"><div class="task-title">${escapeHTML(task.title)}</div><div class="task-meta">${escapeHTML(task.category||"Personal")} · ${task.duration||30} min ${task.alarmEnabled===false?"":"· ⏰"}</div></div><div class="task-time">${escapeHTML(time)}</div><button class="more-btn" data-action="edit" data-id="${escapeHTML(task.id)}" data-date="${date}" aria-label="Edit">⋯</button></article>`;
+}
+function emptyHTML(msg=t("empty")){return `<div class="empty"><div class="emoji">✦</div>${escapeHTML(msg)}</div>`;}
+
 function renderHome(){
  const items=sorted(loadDay(todayISO())),done=items.filter(x=>x.done).length,active=items.length-done,pct=items.length?Math.round(done/items.length*100):0;
  $("todayLabel").textContent=fmtDate(todayISO());
@@ -279,6 +290,7 @@ function renderHome(){
  const upcoming=getAllTasks().filter(x=>x.date>=todayISO()&&!x.done&&x.date!==todayISO()).sort((a,b)=>(a.date+a.hour).localeCompare(b.date+b.hour)).slice(0,3);
  $("upcomingTasks").innerHTML=upcoming.length?upcoming.map(x=>`<article class="task"><div class="alarm-icon">◷</div><div class="task-main"><div class="task-title">${escapeHTML(x.title)}</div><div class="task-meta">${fmtDate(x.date,{month:"short",day:"numeric"})} · ${escapeHTML(x.category||"Personal")}</div></div><div class="task-time">${x.hour===undefined?"":escapeHTML(fmtTime(x))}</div></article>`).join(""):emptyHTML(t("noUpcoming"));
 }
+
 function renderCalendar(){
  const d=dateObj(selectedDate),year=d.getFullYear(),month=d.getMonth();
  $("selectedDayTitle").textContent=fmtDate(selectedDate);
@@ -287,60 +299,247 @@ function renderCalendar(){
   $("periodTitle").textContent=d.toLocaleDateString("en-US",{month:"long",year:"numeric"});
   const first=new Date(year,month,1),start=new Date(year,month,1-first.getDay());
   let html='<div class="calendar-grid">'+["S","M","T","W","T","F","S"].map(x=>`<div class="weekday">${x}</div>`).join("");
-  for(let i=0;i<42;i++){const x=new Date(start);x.setDate(start.getDate()+i);const iso=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`,has=loadDay(iso).length>0;html+=`<button class="day-cell ${x.getMonth()!==month?"muted":""} ${iso===selectedDate?"selected":""} ${iso===todayISO()?"today":""}" data-date="${iso}"><span class="day-num">${x.getDate()}</span><span class="dots">${has?"<i></i>":""}</span></button>`}
+  for(let i=0;i<42;i++){
+   const x=new Date(start);x.setDate(start.getDate()+i);
+   const iso=`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,"0")}-${String(x.getDate()).padStart(2,"0")}`,has=loadDay(iso).length>0;
+   html+=`<button class="day-cell ${x.getMonth()!==month?"muted":""} ${iso===selectedDate?"selected":""} ${iso===todayISO()?"today":""}" data-date="${iso}"><span class="day-num">${x.getDate()}</span><span class="dots">${has?"<i></i>":""}</span></button>`;
+  }
   body.innerHTML=html+"</div>";
  }else if(calendarMode==="week"){
-  const start=addDays(selectedDate,-dateObj(selectedDate).getDay());$("periodTitle").textContent=fmtDate(start,{month:"short",day:"numeric"})+" – "+fmtDate(addDays(start,6),{month:"short",day:"numeric"});
+  const start=addDays(selectedDate,-dateObj(selectedDate).getDay());
+  $("periodTitle").textContent=fmtDate(start,{month:"short",day:"numeric"})+" – "+fmtDate(addDays(start,6),{month:"short",day:"numeric"});
   body.innerHTML='<div class="week-grid">'+Array.from({length:7},(_,i)=>{const iso=addDays(start,i),x=dateObj(iso);return `<button class="week-day ${iso===selectedDate?"selected":""}" data-date="${iso}">${x.toLocaleDateString("en-US",{weekday:"short"})}<b>${x.getDate()}</b></button>`}).join("")+"</div>";
- }else{$("periodTitle").textContent=fmtDate(selectedDate);body.innerHTML=`<div class="card"><div class="eyebrow">${fmtDate(selectedDate)}</div><h2>${loadDay(selectedDate).length} ${t("tasks").toLowerCase()}</h2><div class="sub">${t("calendarSub")}</div></div>`}
+ }else{
+  $("periodTitle").textContent=fmtDate(selectedDate);
+  body.innerHTML=`<div class="card"><div class="eyebrow">${fmtDate(selectedDate)}</div><h2>${loadDay(selectedDate).length} ${t("tasks").toLowerCase()}</h2><div class="sub">${t("calendarSub")}</div></div>`;
+ }
  const items=sorted(loadDay(selectedDate));$("calendarTasks").innerHTML=items.length?items.map(x=>taskHTML(x,selectedDate)).join(""):emptyHTML();
 }
-function renderTasks(){let items=getAllTasks().sort((a,b)=>a.date.localeCompare(b.date)||(a.hour??99)-(b.hour??99));if(taskFilter==="active")items=items.filter(x=>!x.done);if(taskFilter==="done")items=items.filter(x=>x.done);$("taskDateHeading").textContent=`${items.length} ${t("tasks").toLowerCase()}`;$("allTasks").innerHTML=items.length?items.map(x=>`<div data-taskwrap="1">${taskHTML(x,x.date)}<div class="small-note" style="padding:0 12px 5px">${fmtDate(x.date,{month:"short",day:"numeric",year:"numeric"})}</div></div>`).join(""):emptyHTML()}
-function renderAlarms(){const items=getAllTasks().filter(x=>!x.done&&!x.suggested&&!x.isBreak&&x.alarmEnabled!==false&&x.hour!==undefined&&x.date>=todayISO()).sort((a,b)=>(a.date+a.hour).localeCompare(b.date+b.hour));$("alarmStatus").textContent=window.AndroidAlarms?t("deviceReady"):t("browserOnly");$("alarmBadge").textContent=window.AndroidAlarms?"CONNECTED":"BROWSER";$("alarmTasks").innerHTML=items.length?items.map(x=>`<article class="task"><div class="alarm-icon">⏰</div><div class="task-main"><div class="task-title">${escapeHTML(x.title)}</div><div class="task-meta">${fmtDate(x.date,{month:"short",day:"numeric"})}</div></div><div class="task-time">${escapeHTML(fmtTime(x))}</div></article>`).join(""):emptyHTML()}
-function renderAll(){renderHome();renderCalendar();renderTasks();renderAlarms()}
+
+function renderTasks(){
+ let items=getAllTasks().sort((a,b)=>a.date.localeCompare(b.date)||(a.hour??99)-(b.hour??99));
+ if(taskFilter==="active")items=items.filter(x=>!x.done);
+ if(taskFilter==="done")items=items.filter(x=>x.done);
+ $("taskDateHeading").textContent=`${items.length} ${t("tasks").toLowerCase()}`;
+ $("allTasks").innerHTML=items.length?items.map(x=>`<div data-taskwrap="1">${taskHTML(x,x.date)}<div class="small-note" style="padding:0 12px 5px">${fmtDate(x.date,{month:"short",day:"numeric",year:"numeric"})}</div></div>`).join(""):emptyHTML();
+}
+
+function renderAlarms(){
+ const items=getAllTasks().filter(x=>!x.done&&!x.suggested&&!x.isBreak&&x.alarmEnabled!==false&&x.hour!==undefined&&x.date>=todayISO()).sort((a,b)=>(a.date+a.hour).localeCompare(b.date+b.hour));
+ $("alarmStatus").textContent=window.AndroidAlarms?t("deviceReady"):t("browserOnly");
+ $("alarmBadge").textContent=window.AndroidAlarms?"CONNECTED":"BROWSER";
+ $("alarmTasks").innerHTML=items.length?items.map(x=>`<article class="task"><div class="alarm-icon">⏰</div><div class="task-main"><div class="task-title">${escapeHTML(x.title)}</div><div class="task-meta">${fmtDate(x.date,{month:"short",day:"numeric"})}</div></div><div class="task-time">${escapeHTML(fmtTime(x))}</div></article>`).join(""):emptyHTML();
+}
+
+function renderAll(){renderHome();renderCalendar();renderTasks();renderAlarms();}
 function go(page){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+page));document.querySelectorAll(".nav-item[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));}
-function openModal(id){$(id).classList.add("show")}
-function closeModal(id){$(id).classList.remove("show")}
+function openModal(id){$(id).classList.add("show");}
+function closeModal(id){$(id).classList.remove("show");}
+
 function openTask(date=todayISO(),task=null){
- $("taskForm").reset();$("editId").value=task?task.id:"";$("taskName").value=task?task.title:"";$("taskDate").value=date;$("taskTime").value=task&&task.hour!==undefined?`${String(task.hour).padStart(2,"0")}:${String(task.minute||0).padStart(2,"0")}`:"";$("taskDuration").value=task?.duration||30;$("taskCategory").value=task?.category||"Personal";$("taskAlarm").checked=task?task.alarmEnabled!==false:true;$("taskRepeat").checked=!!task?.repeatDaily;$("taskModalTitle").textContent=task?"Edit task":t("addtask");$("deleteTaskBtn").style.display=task?"block":"none";openModal("taskModal")}
-function locateTask(date,id){return loadDay(date).find(x=>String(x.id)===String(id))}
-function onTaskAction(e){const btn=e.target.closest("[data-action]");if(!btn)return;const {action,id,date}=btn.dataset;const items=loadDay(date),idx=items.findIndex(x=>String(x.id)===String(id));if(idx<0)return;if(action==="toggle"){items[idx].done=!items[idx].done;saveDay(date,items);showToast(items[idx].done?t("completedToast"):t("saved"))}else if(action==="edit")openTask(date,items[idx])}
-function newId(date){return "sda_"+date+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7)}
-function submitTask(e){e.preventDefault();const date=$("taskDate").value||todayISO(),id=$("editId").value,title=$("taskName").value.trim();if(!title)return;const time=$("taskTime").value.split(":");const hasTime=time.length===2;const hour=hasTime?+time[0]:undefined,minute=hasTime?+time[1]:undefined;
+ $("taskForm").reset();$("editId").value=task?task.id:"";$("taskName").value=task?task.title:"";$("taskDate").value=date;$("taskTime").value=task&&task.hour!==undefined?`${String(task.hour).padStart(2,"0")}:${String(task.minute||0).padStart(2,"0")}`:"";$("taskDuration").value=task?.duration||30;$("taskCategory").value=task?.category||"Personal";$("taskAlarm").checked=task?task.alarmEnabled!==false:true;$("taskRepeat").checked=!!task?.repeatDaily;$("taskModalTitle").textContent=task?"Edit task":t("addtask");$("deleteTaskBtn").style.display=task?"block":"none";openModal("taskModal");
+}
+
+function locateTask(date,id){return loadDay(date).find(x=>String(x.id)===String(id));}
+
+function onTaskAction(e){
+ const btn=e.target.closest("[data-action]");if(!btn)return;
+ const {action,id,date}=btn.dataset,items=loadDay(date),idx=items.findIndex(x=>String(x.id)===String(id));
+ if(idx<0)return;
+ if(action==="toggle"){items[idx].done=!items[idx].done;saveDay(date,items);showToast(items[idx].done?t("completedToast"):t("saved"));}
+ else if(action==="edit")openTask(date,items[idx]);
+}
+
+function newId(date){return "sda_"+date+"_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);}
+
+function submitTask(e){
+ e.preventDefault();
+ const date=$("taskDate").value||todayISO(),id=$("editId").value,title=$("taskName").value.trim();
+ if(!title)return;
+ const time=$("taskTime").value.split(":");
+ const hasTime=time.length===2;
+ const hour=hasTime?+time[0]:undefined,minute=hasTime?+time[1]:undefined;
  const oldDate=id?getAllDates().find(d=>loadDay(d).some(x=>String(x.id)===String(id))):null;
  const task={id:id||newId(date),title,hour,minute,duration:Math.max(5,Math.min(720,+$("taskDuration").value||30)),category:$("taskCategory").value,done:false,alarmEnabled:$("taskAlarm").checked,repeatDaily:$("taskRepeat").checked};
- if(oldDate){const old=loadDay(oldDate).filter(x=>String(x.id)!==String(id));localStorage.setItem(keyFor(oldDate),JSON.stringify(old))}
- const target=loadDay(date);const existing=target.findIndex(x=>String(x.id)===String(task.id));if(existing>=0)target[existing]=task;else target.push(task);localStorage.setItem(keyFor(date),JSON.stringify(target));
- if(task.repeatDaily){for(let i=1;i<=30;i++){const repeatDate=addDays(date,i),list=loadDay(repeatDate);list.push({...task,id:newId(repeatDate),repeatDaily:true});localStorage.setItem(keyFor(repeatDate),JSON.stringify(list))}}
- closeModal("taskModal");selectedDate=date;syncAndroidAlarms();renderAll();showToast(t("saved"))}
-function deleteCurrentTask(){const id=$("editId").value;if(!id)return;for(const date of getAllDates()){const items=loadDay(date),next=items.filter(x=>String(x.id)!==String(id));if(next.length!==items.length)localStorage.setItem(keyFor(date),JSON.stringify(next))}closeModal("taskModal");syncAndroidAlarms();renderAll();showToast(t("deleted"))}
-function changePeriod(delta){if(calendarMode==="month"){const d=dateObj(selectedDate);d.setMonth(d.getMonth()+delta);selectedDate=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}else selectedDate=addDays(selectedDate,delta*(calendarMode==="week"?7:1));renderCalendar()}
-function setLanguage(lang){settings.language=lang;saveSettings();document.documentElement.lang=lang;document.documentElement.dir=lang==="ur"||lang==="ar"?"rtl":"ltr";document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;el.textContent=t(k)});renderAll()}
-function applyTheme(){document.documentElement.dataset.theme=settings.theme;$("themeSelect").value=settings.theme;$("languageSelect").value=settings.language}
-function openVoice(){ $("voiceText").value="";$("voiceStatus").textContent=t("tapSpeak");$("voiceSupportNote").textContent="";openModal("voiceModal");startSpeech()}
-function startSpeech(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$("voiceSupportNote").textContent=t("noSpeech");return}try{recognition=new SR();recognition.lang=settings.language==="ur"?"ur-PK":settings.language==="ar"?"ar-SA":"en-US";recognition.interimResults=false;recognition.maxAlternatives=1;recognition.onstart=()=>{$("voiceOrb").classList.add("listening");$("voiceStatus").textContent=t("listening")};recognition.onresult=e=>{$("voiceText").value=e.results[0][0].transcript;$("voiceStatus").textContent=$("voiceText").value};recognition.onerror=()=>{$("voiceStatus").textContent=t("noSpeech");$("voiceSupportNote").textContent=t("noSpeech")};recognition.onend=()=>$("voiceOrb").classList.remove("listening");recognition.start()}catch(e){$("voiceSupportNote").textContent=t("noSpeech")}}
-function createVoiceTask(){const title=$("voiceText").value.trim();if(!title){showToast(t("sayTask"));return}let date=todayISO(),time="";const m=title.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i)||title.match(/\b(\d{1,2}):(\d{2})\b/);if(m){let h=+m[1],min=+(m[2]||0);if(m[3]){if(m[3].toLowerCase()==="pm"&&h<12)h+=12;if(m[3].toLowerCase()==="am"&&h===12)h=0}time=`${String(h%24).padStart(2,"0")}:${String(min).padStart(2,"0")}`}
- $("taskName").value=title;$("taskDate").value=date;$("taskTime").value=time;$("taskDuration").value=30;$("taskCategory").value="Personal";$("taskAlarm").checked=!!time;$("taskRepeat").checked=false;closeModal("voiceModal");$("editId").value="";$("taskModalTitle").textContent=t("addtask");$("deleteTaskBtn").style.display="none";openModal("taskModal")}
-function exportData(){const data={app:"Smart Day AI",exportedAt:new Date().toISOString(),tasks:getAllTasks(),settings};const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="smart-day-ai-backup.json";a.click();URL.revokeObjectURL(url);showToast(t("exported"))}
+ if(oldDate){const old=loadDay(oldDate).filter(x=>String(x.id)!==String(id));localStorage.setItem(keyFor(oldDate),JSON.stringify(old));}
+ const target=loadDay(date),existing=target.findIndex(x=>String(x.id)===String(task.id));
+ if(existing>=0)target[existing]=task;else target.push(task);
+ localStorage.setItem(keyFor(date),JSON.stringify(target));
+ if(task.repeatDaily){for(let i=1;i<=30;i++){const repeatDate=addDays(date,i),list=loadDay(repeatDate);list.push({...task,id:newId(repeatDate),repeatDaily:true});localStorage.setItem(keyFor(repeatDate),JSON.stringify(list));}}
+ closeModal("taskModal");selectedDate=date;syncAndroidAlarms();renderAll();showToast(t("saved"));
+}
+
+function deleteCurrentTask(){
+ const id=$("editId").value;if(!id)return;
+ for(const date of getAllDates()){const items=loadDay(date),next=items.filter(x=>String(x.id)!==String(id));if(next.length!==items.length)localStorage.setItem(keyFor(date),JSON.stringify(next));}
+ closeModal("taskModal");syncAndroidAlarms();renderAll();showToast(t("deleted"));
+}
+
+function changePeriod(delta){
+ if(calendarMode==="month"){const d=dateObj(selectedDate);d.setMonth(d.getMonth()+delta);selectedDate=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+ else selectedDate=addDays(selectedDate,delta*(calendarMode==="week"?7:1));
+ renderCalendar();
+}
+
+function setLanguage(lang){
+ settings.language=lang;saveSettings();
+ document.documentElement.lang=lang;
+ document.documentElement.dir=lang==="ur"||lang==="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-i18n]").forEach(el=>{const k=el.dataset.i18n;el.textContent=t(k);});
+ renderAll();
+}
+
+function applyTheme(){
+ document.documentElement.dataset.theme=settings.theme;
+ $("themeSelect").value=settings.theme;
+ $("languageSelect").value=settings.language;
+}
+
+/* UPDATED ANDROID NATIVE VOICE RECOGNITION */
+
+function openVoice(){
+ $("voiceText").value="";
+ $("voiceStatus").textContent=t("tapSpeak");
+ $("voiceSupportNote").textContent="";
+ $("voiceOrb").classList.remove("listening");
+ openModal("voiceModal");
+ startSpeech();
+}
+
+function startSpeech(){
+ const language=
+  settings.language==="ur"?"ur-PK":
+  settings.language==="ar"?"ar-SA":
+  "en-US";
+
+ $("voiceOrb").classList.remove("listening");
+ $("voiceSupportNote").textContent="";
+
+ if(!window.AndroidVoice||typeof window.AndroidVoice.startListening!=="function"){
+  $("voiceStatus").textContent=t("noSpeech");
+  $("voiceSupportNote").textContent="Android voice service is not connected. Check the AndroidVoice bridge in MainActivity.kt.";
+  return;
+ }
+
+ $("voiceStatus").textContent=t("listening");
+
+ try{
+  window.AndroidVoice.startListening(language);
+ }catch(error){
+  console.error("Native voice start failed:",error);
+  $("voiceOrb").classList.remove("listening");
+  $("voiceStatus").textContent=t("noSpeech");
+  $("voiceSupportNote").textContent=String(error);
+ }
+}
+
+/* Android Kotlin calls this function when voice recognition starts. */
+window.onNativeVoiceStatus=function(status){
+ if(status==="listening"){
+  $("voiceOrb").classList.add("listening");
+  $("voiceStatus").textContent=t("listening");
+  $("voiceSupportNote").textContent="";
+ }
+};
+
+/* Android Kotlin sends the recognized words or an error here. */
+window.onNativeVoiceResult=function(spokenText,error){
+ $("voiceOrb").classList.remove("listening");
+
+ if(spokenText&&String(spokenText).trim()){
+  const result=String(spokenText).trim();
+  $("voiceText").value=result;
+  $("voiceStatus").textContent=result;
+  $("voiceSupportNote").textContent="";
+ }else{
+  $("voiceStatus").textContent=t("noSpeech");
+  $("voiceSupportNote").textContent=error?String(error):t("noSpeech");
+ }
+};
+
+function createVoiceTask(){
+ const title=$("voiceText").value.trim();
+ if(!title){showToast(t("sayTask"));return;}
+ let date=todayISO(),time="";
+ const m=title.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i)||title.match(/\b(\d{1,2}):(\d{2})\b/);
+ if(m){
+  let h=+m[1],min=+(m[2]||0);
+  if(m[3]){if(m[3].toLowerCase()==="pm"&&h<12)h+=12;if(m[3].toLowerCase()==="am"&&h===12)h=0;}
+  time=`${String(h%24).padStart(2,"0")}:${String(min).padStart(2,"0")}`;
+ }
+ $("taskName").value=title;$("taskDate").value=date;$("taskTime").value=time;$("taskDuration").value=30;$("taskCategory").value="Personal";$("taskAlarm").checked=!!time;$("taskRepeat").checked=false;
+ closeModal("voiceModal");$("editId").value="";$("taskModalTitle").textContent=t("addtask");$("deleteTaskBtn").style.display="none";openModal("taskModal");
+}
+
+function exportData(){
+ const data={app:"Smart Day AI",exportedAt:new Date().toISOString(),tasks:getAllTasks(),settings};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="smart-day-ai-backup.json";a.click();URL.revokeObjectURL(url);showToast(t("exported"));
+}
+
 function init(){
  loadSettings();applyTheme();setLanguage(settings.language);
  $("todayLabel").textContent=fmtDate(todayISO());
+
  document.querySelectorAll(".nav-item[data-page]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
  document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
- $("micNav").addEventListener("click",openVoice);$("settingsBtn").addEventListener("click",()=>openModal("settingsModal"));
- $("addHomeBtn").addEventListener("click",()=>openTask(todayISO()));$("addTaskBtn").addEventListener("click",()=>openTask(todayISO()));$("addCalendarBtn").addEventListener("click",()=>openTask(selectedDate));$("addAlarmBtn").addEventListener("click",()=>openTask(todayISO()));
- $("taskForm").addEventListener("submit",submitTask);$("deleteTaskBtn").addEventListener("click",deleteCurrentTask);$("voiceAddBtn").addEventListener("click",createVoiceTask);
+
+ $("micNav").addEventListener("click",openVoice);
+ $("settingsBtn").addEventListener("click",()=>openModal("settingsModal"));
+
+ $("addHomeBtn").addEventListener("click",()=>openTask(todayISO()));
+ $("addTaskBtn").addEventListener("click",()=>openTask(todayISO()));
+ $("addCalendarBtn").addEventListener("click",()=>openTask(selectedDate));
+ $("addAlarmBtn").addEventListener("click",()=>openTask(todayISO()));
+
+ $("taskForm").addEventListener("submit",submitTask);
+ $("deleteTaskBtn").addEventListener("click",deleteCurrentTask);
+ $("voiceAddBtn").addEventListener("click",createVoiceTask);
+
  document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
  document.querySelectorAll(".modal-backdrop").forEach(b=>b.addEventListener("click",e=>{if(e.target===b)closeModal(b.id)}));
- document.addEventListener("click",e=>{onTaskAction(e);const day=e.target.closest("[data-date]");if(day&&day.classList.contains("day-cell")||day&&day.classList.contains("week-day")){selectedDate=day.dataset.date;renderCalendar()}});
- $("prevPeriod").addEventListener("click",()=>changePeriod(-1));$("nextPeriod").addEventListener("click",()=>changePeriod(1));$("todayBtn").addEventListener("click",()=>{selectedDate=todayISO();renderCalendar()});
- $("calendarModes").addEventListener("click",e=>{const b=e.target.closest("button[data-mode]");if(!b)return;calendarMode=b.dataset.mode;document.querySelectorAll("#calendarModes button").forEach(x=>x.classList.toggle("active",x===b));renderCalendar()});
- $("taskFilters").addEventListener("click",e=>{const b=e.target.closest("button[data-filter]");if(!b)return;taskFilter=b.dataset.filter;document.querySelectorAll("#taskFilters button").forEach(x=>x.classList.toggle("active",x===b));renderTasks()});
- $("themeSelect").addEventListener("change",e=>{settings.theme=e.target.value;saveSettings();applyTheme()});$("languageSelect").addEventListener("change",e=>setLanguage(e.target.value));
- $("notifyBtn").addEventListener("click",async()=>{if(!("Notification"in window)){showToast("Notifications are not supported in this browser.");return}try{const p=await Notification.requestPermission();showToast(p==="granted"?"Notifications enabled":"Permission not granted")}catch(e){}});
+
+ document.addEventListener("click",e=>{
+  onTaskAction(e);
+  const day=e.target.closest("[data-date]");
+  if(day&&(day.classList.contains("day-cell")||day.classList.contains("week-day"))){
+   selectedDate=day.dataset.date;renderCalendar();
+  }
+ });
+
+ $("prevPeriod").addEventListener("click",()=>changePeriod(-1));
+ $("nextPeriod").addEventListener("click",()=>changePeriod(1));
+ $("todayBtn").addEventListener("click",()=>{selectedDate=todayISO();renderCalendar();});
+
+ $("calendarModes").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-mode]");if(!b)return;
+  calendarMode=b.dataset.mode;
+  document.querySelectorAll("#calendarModes button").forEach(x=>x.classList.toggle("active",x===b));
+  renderCalendar();
+ });
+
+ $("taskFilters").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-filter]");if(!b)return;
+  taskFilter=b.dataset.filter;
+  document.querySelectorAll("#taskFilters button").forEach(x=>x.classList.toggle("active",x===b));
+  renderTasks();
+ });
+
+ $("themeSelect").addEventListener("change",e=>{settings.theme=e.target.value;saveSettings();applyTheme();});
+ $("languageSelect").addEventListener("change",e=>setLanguage(e.target.value));
+
+ $("notifyBtn").addEventListener("click",async()=>{
+  if(!("Notification"in window)){showToast("Notifications are not supported in this browser.");return;}
+  try{const p=await Notification.requestPermission();showToast(p==="granted"?"Notifications enabled":"Permission not granted");}catch(e){}
+ });
+
  $("exportBtn").addEventListener("click",exportData);
- renderAll();syncAndroidAlarms();
+
+ renderAll();
+ syncAndroidAlarms();
 }
+
 init();
 })();
 </script>
